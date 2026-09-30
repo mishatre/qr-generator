@@ -1,0 +1,49 @@
+[package]
+name = "qr_generator_addin"
+description = "1C:Enterprise Native API component that renders a QR code with a label in the middle"
+version.workspace = true
+edition.workspace = true
+publish.workspace = true
+
+[lib]
+name = "qr_generator_addin"
+# cdylib is the artefact 1C loads. rlib keeps the same logic linkable from the
+# integration tests and the example, which run as ordinary Rust and never inside
+# 1C.
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+# The Native API runtime, vendored from the owner's own framework: it is the ABI
+# this platform actually drives, which `native_api_1c` 0.10.7 is not. See
+# rust/vendor/README.md for the evidence and for what was changed while vendoring.
+ones_addin = { path = "../../vendor/ones_addin" }
+# `#[derive(AddInComponent)]` and `#[methods_impl]`, which are what register the
+# object and its methods with the platform. This component needs one change to the
+# vendored macro — a method whose result is binary data rather than a string —
+# which `rust/vendor/README.md` records.
+ones_addin_derive = { path = "../../vendor/ones_addin_derive" }
+# The QR encoder. Pure Rust, no C toolchain on any target, and it hands back the
+# module matrix rather than an image, so the renderer owns every drawing decision
+# (module size, quiet zone, the label plate) instead of post-processing a picture
+# the crate produced.
+qrcode = { version = "0.14", default-features = false }
+# PNG encoding and the pixel buffer. `default-features = false` plus `png` keeps
+# every other codec out of the library: the component returns PNG and reads no
+# image format at all.
+image = { version = "0.25", default-features = false, features = ["png"] }
+# Font parsing and outline rasterisation for the label. Pure Rust, and it reads
+# the TTF the component carries in `assets/`.
+ab_glyph = { version = "0.2", default-features = false, features = ["std"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+getrandom = "0.3"
+sha2 = "0.10"
+
+[dev-dependencies]
+# The FFI smoke test loads the built .so and calls its exported entry points the
+# way the platform would, without needing a 1C licence.
+libloading = "0.8"
+# The only test that can tell "a picture was produced" from "a picture a scanner
+# can read": the generation tests decode the rendered PNG back into the text that
+# went in, with a label covering the middle of it.
+rqrr = "0.11"
