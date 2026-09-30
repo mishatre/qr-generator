@@ -20,10 +20,13 @@ codegen-units = 1
 # the platform looks for and nothing else. Only release builds lose symbols; for
 # a backtrace, rebuild with `--config 'profile.release.strip="debuginfo"'`.
 strip = "symbols"
-# Inherited from the sibling project (yaml-parser), whose consumer asked for a
-# small library: it travels inside a 1C template and is loaded once per session.
-# Whether that trade still pays here has NOT been measured in this repository —
-# this component rasterises a font outline per label character, which the YAML
-# parser's libyaml-bound workload does not do. T001 in docs/plan/index.md is the
-# task that measures it; until then this is a copied default, not a finding.
+# Measured here, not inherited: the libraries travel inside a 1C template, so size
+# is the objective, and "z" wins where it counts - on Windows it is 18 per cent
+# smaller than "s" (3 130 880 B against 3 829 760 B, size-first std, both
+# libraries built with -Z build-std). On Linux "s" is 2 per cent smaller
+# (596 704 B against 610 144 B), which does not pay for a second profile: the
+# Windows library is five times the size of the Linux one. Size-first std
+# matters far more than this choice - it takes 37 per cent off the Linux library
+# and 19 off the Windows one. Numbers, method and the speed measurement:
+# T001 in docs/plan/index.md.
 opt-level = "z"
