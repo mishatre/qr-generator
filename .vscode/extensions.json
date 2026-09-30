@@ -1,0 +1,8 @@
+{
+    "recommendations": [
+        "yellow-hammer.1c-platform-tools",
+        "1c-syntax.language-1c-bsl",
+        "rust-lang.rust-analyzer",
+        "vadimcn.vscode-lldb"
+    ]
+}

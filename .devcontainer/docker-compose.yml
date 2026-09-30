@@ -1,0 +1,20 @@
+services:
+  dev:
+    platform: linux/amd64
+
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+
+    volumes:
+      - ..:/workspace:cached
+      
+    cap_add:
+      - SYS_ADMIN
+    security_opt:
+      - seccomp=unconfined
+      - apparmor=unconfined
+
+    working_dir: /workspace
+
+    command: sleep infinity

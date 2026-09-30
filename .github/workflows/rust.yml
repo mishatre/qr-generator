@@ -1,0 +1,78 @@
+name: rust
+
+# Everything in this workflow runs without a 1C licence, which is why it can be
+# continuous integration at all: the drawing rules, the QR codes read back by a real
+# decoder, the exported ABI, both platform builds and the packed archive. The
+# extension compile is not here because it needs the private 1C image, and the
+# YAxUnit suite is not here because it needs a licence.
+#
+# The Windows DLL is built and packed but not executed; a Windows host is required
+# for that, and pretending otherwise would be the kind of green tick that hides a
+# broken release.
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  rust:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      # Reads rust-toolchain.toml, so the compiler, its components and both targets
+      # cannot drift from what the dev container installs.
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: rust
+
+      # mingw-w64 is the linker for the Windows target; zip and unzip are used by
+      # the packer.
+      - name: Install the Windows cross toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends gcc-mingw-w64-x86-64 zip unzip
+
+      - name: Formatting
+        working-directory: rust
+        run: cargo fmt --all --check
+
+      - name: Lints
+        working-directory: rust
+        run: cargo clippy --workspace --all-targets -- --deny warnings
+
+      # Covers the drawing rules, the layout search and the generated pictures,
+      # which are decoded back with a real QR decoder. The FFI smoke test skips
+      # itself when no library has been built yet, so it is meaningful only after
+      # the builds below; the next step builds first and re-runs it.
+      - name: Tests
+        working-directory: rust
+        run: cargo test --workspace
+
+      - name: Build the Linux component
+        working-directory: rust
+        run: cargo build --release -p qr_generator_addin --target x86_64-unknown-linux-gnu
+
+      - name: Build the Windows component
+        working-directory: rust
+        run: cargo build --release -p qr_generator_addin --target x86_64-pc-windows-gnu
+
+      # Run after the builds so the library exists and the ABI checks actually run
+      # instead of skipping.
+      - name: Exported ABI
+        working-directory: rust
+        run: cargo test -p qr_generator_addin --test ffi_smoke
+
+      - name: Pack the component
+        run: tools/native/pack-addin.sh
+
+      - name: Upload the archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: QrGeneratorNative
+          path: build/dist/QrGeneratorNative.zip
+          if-no-files-found: error

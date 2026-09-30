@@ -1,0 +1,75 @@
+# ---------------------------------------------------------------------------
+# Generated 1C artifacts
+# ---------------------------------------------------------------------------
+# build/ holds compiled *.cfe, disposable infobases (build/ib), the staged
+# release source tree (build/release/QrGenerator), the packed component
+# (build/dist) and vendored tool downloads (build/vendor). All of it is
+# rebuildable. It is also where the render example writes its sample picture.
+build/
+out/
+
+# ---------------------------------------------------------------------------
+# Vendored OneScript dependencies
+# ---------------------------------------------------------------------------
+# Restored from packagedef via opm.
+oscript_modules/
+
+# ---------------------------------------------------------------------------
+# Native component build products
+# ---------------------------------------------------------------------------
+# The ZIP that carries the component is a release asset, never a source file:
+# tools/1c-release/build-release-src.sh injects it into a staged copy of the
+# extension as a binary template. Nothing here should ever be committed.
+rust/target/
+# rust-analyzer writes its flycheck scratch output here at the workspace root.
+/target/
+*.so
+*.dll
+*.dylib
+*.zip
+
+# The label font is the one binary that IS a source file: it is compiled into the
+# library with include_bytes!, and the build cannot run without it. It is tracked
+deliberately — see rust/crates/addin/assets/README.md for its provenance.
+
+# ---------------------------------------------------------------------------
+# Agent tooling state
+# ---------------------------------------------------------------------------
+.serena/cache/
+.serena/logs/
+
+# ---------------------------------------------------------------------------
+# Python
+# ---------------------------------------------------------------------------
+__pycache__/
+*.pyc
+
+# ---------------------------------------------------------------------------
+# Temporary files
+# ---------------------------------------------------------------------------
+*.tmp
+*.log
+
+# ---------------------------------------------------------------------------
+# Local overrides
+# ---------------------------------------------------------------------------
+.vscode/*.local.json
+.DS_Store
+
+# ---------------------------------------------------------------------------
+# Licence files
+# ---------------------------------------------------------------------------
+# A 1C licence is issued to an organisation and is a secret. The file is kept in the
+# repository root for convenience — tools/1c-platform/install-licence.sh copies it
+# into /var/1C/licenses inside the container — but it must never be committed.
+*.lic
+1Cv8Licence
+
+# ---------------------------------------------------------------------------
+# Reference material shipped by 1C
+# ---------------------------------------------------------------------------
+# The two .bsl modules are the shipped УНФ barcode generator, kept as the design
+# reference for the wrapper and the reuse module (CC BY 4.0, headers retained).
+# The 10 MB component that comes with them is not part of this project and is
+# redistributed from neither side: it stays on disk, out of history.
+docs/examples/КомпонентаПечатиШтрихкодов
