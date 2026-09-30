@@ -83,6 +83,16 @@
 			"problemMatcher": []
 		},
 		{
+			"label": "1C: assemble the handoff set",
+			"detail": "Archive, compiled extension, both module texts and the consumer guide, into build/handoff.",
+			"type": "shell",
+			"command": "tools/1c-release/build-handoff.sh",
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": []
+		},
+		{
 			"label": "1C: activate licence (open the infobase interactively)",
 			"detail": "One-off. The licence lands in ~/.1cv8, which is a named volume.",
 			"type": "shell",
