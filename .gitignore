@@ -73,3 +73,7 @@ __pycache__/
 # The 10 MB component that comes with them is not part of this project and is
 # redistributed from neither side: it stays on disk, out of history.
 docs/examples/КомпонентаПечатиШтрихкодов
+
+# Saved pages of the 1C standards (#std453, #std455) used while writing the BSL
+# comments. The text belongs to 1C; the modules cite the standard numbers instead.
+docs/1c-docs/
