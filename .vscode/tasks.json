@@ -64,6 +64,16 @@
 			"problemMatcher": []
 		},
 		{
+			"label": "1C: build merge carrier (CF, no qr_ prefix)",
+			"detail": "The same objects as a plain configuration, for the configurator's compare-and-merge with a main configuration.",
+			"type": "shell",
+			"command": "tools/1c-release/compile-plain-config.sh",
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": []
+		},
+		{
 			"label": "1C: build the extension and its test suite (no licence)",
 			"detail": "Tier 1 of tests/bsl/run-tests.sh: packs, stages, registers the suite and compiles with ibcmd.",
 			"type": "shell",
