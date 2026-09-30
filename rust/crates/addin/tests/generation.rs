@@ -376,6 +376,54 @@ fn the_label_plate_hides_the_modules_under_it() {
 }
 
 #[test]
+fn a_transparent_plate_leaves_a_hole_instead_of_a_plate() {
+    // The label background may be "transparent", and what that means is a hole, not
+    // an invisible plate: the modules under the label are removed and nothing is
+    // painted in their place, so whatever the picture ends up on shows through. That
+    // is what a code printed onto a coloured card needs - an invisible-plate reading
+    // would leave the modules behind the text, and a white plate would punch a white
+    // rectangle out of the card.
+    let transparent = Options {
+        label_background: Color::parse("transparent").expect("a colour"),
+        ..Options::default()
+    };
+    let png = render_with("ORDER-2026-0001", "AB12", &transparent).expect("a picture");
+    let image = picture(&png);
+    let side = (transparent.size as f32 * transparent.label_size as f32).round();
+    let left = ((transparent.size as f32 - side) / 2.0).round() as u32;
+    let last = left + side as u32 - 1;
+    let centre = (left + last) / 2;
+
+    // A few pixels inside the left edge of the plate: inside it, past the rounded
+    // corner, and short of where the text starts (the plate leaves the text a margin).
+    let probe = (left + 3, centre);
+
+    let opaque_png =
+        render_with("ORDER-2026-0001", "AB12", &Options::default()).expect("a picture");
+    let opaque = picture(&opaque_png);
+
+    assert_eq!(
+        opaque.get_pixel(probe.0, probe.1)[3],
+        255,
+        "the default plate is opaque at {probe:?}, which is what makes this comparison mean something"
+    );
+    assert_eq!(
+        image.get_pixel(probe.0, probe.1)[3],
+        0,
+        "the transparent plate left {probe:?} opaque, so the modules were not removed"
+    );
+
+    // The text is still drawn where the plate was, and the code still reads when the
+    // hole is put on white - the hole costs the symbol the same share an opaque plate
+    // does, so the measured label ceiling applies to both.
+    assert!(
+        image.pixels().any(|pixel| pixel[3] == 255),
+        "nothing in the picture is opaque, so the label text is missing too"
+    );
+    assert_eq!(decode(&png), "ORDER-2026-0001");
+}
+
+#[test]
 fn the_label_text_is_drawn_in_the_label_colour() {
     let options = Options {
         label_color: Color::parse("#ff0000").expect("a colour"),

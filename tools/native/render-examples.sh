@@ -98,6 +98,8 @@ render label-0.35 "$RECORD" "$CHECK" '{"labelSize": 0.35}' \
 	"Подложка 0.35: измеренная граница для символа в 25 модулей."
 render label-0.4 "$RECORD" "$CHECK" '{"labelSize": 0.4}' \
 	"Подложка 0.4: на символе в 25 модулей код перестает читаться - подложка закрывает больше модулей, чем восстанавливает коррекция."
+render label-transparent "$RECORD" "$CHECK" '{"labelBackground": "transparent"}' \
+	"Прозрачная подложка: модули под подписью удалены, на их месте отверстие, а текст подписи остается. Видно на шахматке."
 render quiet-zone-4 "$RECORD" "$CHECK" '{"quietZone": 4, "labelSize": 0.25}' \
 	"Зона покоя 4 модуля: нужна, когда код печатается вплотную к краю."
 render ec-l "$RECORD" "$CHECK" '{"errorCorrectionLevel": "L"}' \
