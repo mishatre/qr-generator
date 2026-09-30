@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  Describes the contents of QrGeneratorNative.zip, the archive a 1C configuration
+  or extension carries as a binary template and hands to
+  ПодключитьВнешнююКомпоненту.
+
+  The `path` values must match the file names the packer writes, and
+  tools/native/pack-addin.sh verifies that every path listed here is actually
+  present in the archive. A manifest entry with no file behind it is a component
+  that loads on one platform and not on another.
+
+  `arch` is x86_64 only. A 32-bit build would need its own entries, and the modern
+  1C server is 64-bit; see docs/plan/project.md for the platform scope.
+
+  The platform documentation also lists browser-plugin entries for the web client.
+  They are absent on purpose: the web client cannot load a Native API component.
+-->
+<bundle xmlns="http://v8.1c.ru/8.2/addin/bundle" name="QrGeneratorNative">
+	<component os="Windows" path="QrGenerator_win_x86_64.dll" type="native" arch="x86_64" />
+	<component os="Linux" path="QrGenerator_linux_x86_64.so" type="native" arch="x86_64" />
+</bundle>

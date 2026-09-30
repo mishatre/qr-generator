@@ -1,0 +1,6 @@
+# Objects excluded from vrunner validate syntax-check.
+# One metadata object name per line, as reported by the check.
+#
+# This project has a single small wrapper module (qr_QRCode), so nothing is
+# excluded today. Add entries here — with a comment saying why — rather than in
+# autumn-properties.json, so the reason travels with the exception.
