@@ -1,96 +1,96 @@
 {
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "Rust: test workspace",
-            "detail": "Unit tests plus the generation tests, which decode the rendered PNG with a real QR decoder. No 1C licence needed.",
-            "type": "shell",
-            "command": "cargo test --workspace",
-            "options": {
-                "cwd": "${workspaceFolder}/rust"
-            },
-            "group": {
-                "kind": "test",
-                "isDefault": true
-            },
-            "problemMatcher": []
-        },
-        {
-            "label": "Rust: render a sample code",
-            "detail": "Writes build/qr-code.png so the result can be looked at. Arguments go after --.",
-            "type": "shell",
-            "command": "cargo run -p qr_generator_addin --example render --",
-            "args": [
-                "2|2000020302|0085F0226|01022031|5RCD6VPEAX4R",
-                "AX4R",
-                "build/qr-code.png"
-            ],
-            "options": {
-                "cwd": "${workspaceFolder}/rust"
-            },
-            "problemMatcher": []
-        },
-        {
-            "label": "Native: build component (both targets, size config)",
-            "detail": "Nightly, size-first: -Z build-std with optimize_for_size and immediate-abort.",
-            "type": "shell",
-            "command": "tools/native/build-addin.sh",
-            "options": {
-                "cwd": "${workspaceFolder}"
-            },
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "problemMatcher": []
-        },
-        {
-            "label": "Native: pack add-in (manifest.xml + ZIP)",
-            "type": "shell",
-            "command": "tools/native/pack-addin.sh",
-            "options": {
-                "cwd": "${workspaceFolder}"
-            },
-            "problemMatcher": []
-        },
-        {
-            "label": "1C: build extension (CFE with the binary template)",
-            "detail": "Packing separately is not needed: the script stages the tree, creates build/ib and compiles.",
-            "type": "shell",
-            "command": "tools/1c-release/compile-extension.sh",
-            "options": {
-                "cwd": "${workspaceFolder}"
-            },
-            "problemMatcher": []
-        },
-        {
-            "label": "1C: build the extension and its test suite (no licence)",
-            "detail": "Tier 1 of tests/bsl/run-tests.sh: packs, stages, registers the suite and compiles with ibcmd.",
-            "type": "shell",
-            "command": "tests/bsl/run-tests.sh --build-only",
-            "options": {
-                "cwd": "${workspaceFolder}"
-            },
-            "problemMatcher": []
-        },
-        {
-            "label": "1C: run YAxUnit suite (needs a 1C licence)",
-            "type": "shell",
-            "command": "tests/bsl/run-tests.sh --rebuild-base",
-            "options": {
-                "cwd": "${workspaceFolder}"
-            },
-            "problemMatcher": []
-        },
-        {
-            "label": "1C: activate licence (open the infobase interactively)",
-            "detail": "One-off. The licence lands in ~/.1cv8, which is a named volume.",
-            "type": "shell",
-            "command": "tools/1c-platform/open-infobase.sh client ib",
-            "options": {
-                "cwd": "${workspaceFolder}"
-            },
-            "problemMatcher": []
-        }
-    ]
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Rust: test workspace",
+			"detail": "Unit tests plus the generation tests, which decode the rendered PNG with a real QR decoder. No 1C licence needed.",
+			"type": "shell",
+			"command": "cargo test --workspace",
+			"options": {
+				"cwd": "${workspaceFolder}/rust"
+			},
+			"group": {
+				"kind": "test",
+				"isDefault": true
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "Rust: render a sample code",
+			"detail": "Writes build/qr-code.png so the result can be looked at. Arguments go after --.",
+			"type": "shell",
+			"command": "cargo run -p qr_generator_addin --example render --",
+			"args": [
+				"2|2000020302|0085F0226|01022031|5RCD6VPEAX4R",
+				"AX4R",
+				"build/qr-code.png"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/rust"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "Native: build component (both targets, size config)",
+			"detail": "Nightly, size-first: -Z build-std with optimize_for_size and immediate-abort.",
+			"type": "shell",
+			"command": "tools/native/build-addin.sh",
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "Native: pack add-in (manifest.xml + ZIP)",
+			"type": "shell",
+			"command": "tools/native/pack-addin.sh",
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "1C: build extension (CFE with the binary template)",
+			"detail": "Packing separately is not needed: the script stages the tree, creates build/ib and compiles.",
+			"type": "shell",
+			"command": "tools/1c-release/compile-extension.sh",
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "1C: build the extension and its test suite (no licence)",
+			"detail": "Tier 1 of tests/bsl/run-tests.sh: packs, stages, registers the suite and compiles with ibcmd.",
+			"type": "shell",
+			"command": "tests/bsl/run-tests.sh --build-only",
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "1C: run YAxUnit suite (needs a 1C licence)",
+			"type": "shell",
+			"command": "tests/bsl/run-tests.sh --rebuild-base",
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "1C: activate licence (open the infobase interactively)",
+			"detail": "One-off. The licence lands in ~/.1cv8, which is a named volume.",
+			"type": "shell",
+			"command": "tools/1c-platform/open-infobase.sh client ib",
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": []
+		}
+	]
 }

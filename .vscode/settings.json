@@ -1,31 +1,29 @@
 {
-    "files.associations": {
-        "*.bsl": "bsl",
-        "*.os": "bsl"
-    },
-    "files.exclude": {
-        "**/.git": true,
-        "**/oscript_modules": true,
-        "**/rust/target": true
-    },
-    "search.exclude": {
-        "**/oscript_modules": true,
-        "**/build": true,
-        "**/rust/target": true
-    },
-    "terminal.integrated.cwd": "${workspaceFolder}",
-    // The Cargo workspace is not at the repository root, and the root holds 1C XML
-    // dumps, build output and the vendored framework's own manifests. Pinning the
-    // manifest keeps rust-analyzer from loading anything but rust/Cargo.toml.
-    //
-    // The cost of pinning, learned the slow way: with `linkedProjects` set,
-    // rust-analyzer does NOT fall back to discovering a manifest on its own, so a
-    // window opened before rust/Cargo.toml exists reports "failed to find any
-    // projects in [...]" and keeps reporting it until the language server is
-    // restarted — even after the file appears. On a window that shows that error,
-    // run "rust-analyzer: Restart Server" (or reload the window).
-    "rust-analyzer.linkedProjects": [
-        "rust/Cargo.toml"
-    ],
-    "rust-analyzer.check.command": "clippy"
+	"files.associations": {
+		"*.bsl": "bsl",
+		"*.os": "bsl"
+	},
+	"files.exclude": {
+		"**/.git": true,
+		"**/oscript_modules": true,
+		"**/rust/target": true
+	},
+	"search.exclude": {
+		"**/oscript_modules": true,
+		"**/build": true,
+		"**/rust/target": true
+	},
+	"terminal.integrated.cwd": "${workspaceFolder}",
+	// The Cargo workspace is not at the repository root, and the root holds 1C XML
+	// dumps, build output and the vendored framework's own manifests. Pinning the
+	// manifest keeps rust-analyzer from loading anything but rust/Cargo.toml.
+	//
+	// The cost of pinning, learned the slow way: with `linkedProjects` set,
+	// rust-analyzer does NOT fall back to discovering a manifest on its own, so a
+	// window opened before rust/Cargo.toml exists reports "failed to find any
+	// projects in [...]" and keeps reporting it until the language server is
+	// restarted — even after the file appears. On a window that shows that error,
+	// run "rust-analyzer: Restart Server" (or reload the window).
+	"rust-analyzer.linkedProjects": ["rust/Cargo.toml"],
+	"rust-analyzer.check.command": "clippy"
 }
