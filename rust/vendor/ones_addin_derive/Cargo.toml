@@ -1,0 +1,18 @@
+[package]
+# Vendored, with the owner's agreement; see rust/vendor/README.md.
+name = "ones_addin_derive"
+version.workspace = true
+edition.workspace = true
+publish.workspace = true
+description = "Derive and attribute macros for ones_addin"
+
+[lib]
+proc-macro = true
+
+[dependencies]
+quote = "1.0.26"
+syn = { version = "2.0.15", features = ["full"] }
+# The vendored version also listed `utf16_lit` and `ones_addin` here. Neither is
+# used at expansion time — the generated code names `ones_addin::utf16::utf16_null!`
+# as a path and leaves resolution to the component crate — so both edges were
+# dropped. See rust/vendor/README.md.

@@ -1,0 +1,17 @@
+[package]
+# Vendored, with the owner's agreement; see rust/vendor/README.md for the origin
+# and for the list of changes made while vendoring.
+#
+# The name is part of the interface and must not be tidied: the macros in this
+# crate and in ones_addin_derive expand to `ones_addin::...` paths, so a rename
+# breaks every component that uses them.
+name = "ones_addin"
+version.workspace = true
+edition.workspace = true
+publish.workspace = true
+description = "Native API component runtime for 1C:Enterprise"
+
+[dependencies]
+# The AddInComponent derive generates `utf16_null!` calls that resolve through
+# this crate's `utf16` module, so it must be re-exported here.
+utf16_lit = "2.0"

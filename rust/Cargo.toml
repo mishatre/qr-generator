@@ -1,0 +1,29 @@
+[workspace]
+resolver = "2"
+members = ["crates/addin", "vendor/ones_addin", "vendor/ones_addin_derive"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[profile.release]
+# A Rust panic that unwinds out of an `extern "C"` frame into the platform is
+# undefined behaviour, so aborting is the only safe option. Everything the
+# component exposes returns a value instead of panicking, and the 1C side never
+# sees an exception from the ABI: a failure travels back as an empty result plus
+# the message read by the next call.
+panic = "abort"
+lto = true
+codegen-units = 1
+# `nm -D` on the Linux library must show exactly the five dynamic entry points
+# the platform looks for and nothing else. Only release builds lose symbols; for
+# a backtrace, rebuild with `--config 'profile.release.strip="debuginfo"'`.
+strip = "symbols"
+# Inherited from the sibling project (yaml-parser), whose consumer asked for a
+# small library: it travels inside a 1C template and is loaded once per session.
+# Whether that trade still pays here has NOT been measured in this repository —
+# this component rasterises a font outline per label character, which the YAML
+# parser's libyaml-bound workload does not do. T001 in docs/plan/index.md is the
+# task that measures it; until then this is a copied default, not a finding.
+opt-level = "z"

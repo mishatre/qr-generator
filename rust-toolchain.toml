@@ -1,0 +1,30 @@
+# Pinned so that the container, CI and a developer laptop all compile the
+# component with the same compiler. rustup installs this toolchain, its targets
+# and its components on the first `cargo` invocation if they are missing.
+#
+# x86_64-pc-windows-gnu is built from Linux with mingw-w64 (see
+# .devcontainer/Dockerfile and rust/.cargo/config.toml). The MSVC toolchain is
+# deliberately not used: it needs a licence, mingw-w64 does not.
+#
+# A host build needs none of the listed targets: `cargo test` and `cargo build`
+# without `--target` compile the component for whichever machine runs them, which
+# is how the pure-Rust logic is checked on a laptop that has no 1C platform.
+#
+# `rust-analyzer` is here for the editor, not for the build, and it is not
+# optional decoration. The VS Code extension ships its own server, and that server
+# refuses a toolchain it considers too old — it logs "using an outdated toolchain
+# version" and the extension answers with a modal warning naming this file. Because
+# this project pins its compiler, the fix is the one the message suggests: with the
+# component installed, rustup provides a rust-analyzer built from the same commit as
+# the pinned rustc, the extension prefers it over its own, and the two cannot
+# disagree about what the compiler accepts. Verified here: the toolchain's
+# rust-analyzer reports `1.92.0 (ded5c06c 2025-12-08)`, the same commit as rustc.
+#
+# The cost is a 38 MB download on a machine or CI runner that has not got it yet.
+# That is the price of analysis that matches the compiler; the alternative is every
+# developer running `rustup component add rust-analyzer --toolchain 1.92.0` by hand.
+[toolchain]
+channel = "1.92.0"
+profile = "minimal"
+components = ["clippy", "rustfmt", "rust-analyzer"]
+targets = ["x86_64-unknown-linux-gnu", "x86_64-pc-windows-gnu"]

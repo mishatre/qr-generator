@@ -1,0 +1,16 @@
+# Cross-compilation settings for the Windows component.
+#
+# The Windows DLL is produced on Linux with mingw-w64, which is why this project
+# does not need an MSVC licence. `+crt-static` links the mingw runtime
+# (libgcc_s_seh-1.dll, libwinpthread-1.dll) into the DLL, so a 1C server can load
+# it from a bare directory with no extra DLLs beside it. The platform
+# documentation recommends statically including non-system runtime libraries for
+# exactly this reason.
+[target.x86_64-pc-windows-gnu]
+linker = "x86_64-w64-mingw32-gcc"
+ar = "x86_64-w64-mingw32-ar"
+rustflags = ["-C", "target-feature=+crt-static"]
+
+# Keep every build product under rust/target so one .gitignore rule covers them.
+[build]
+target-dir = "target"
