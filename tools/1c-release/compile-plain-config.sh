@@ -78,8 +78,9 @@ grep -q "<Name>$basename_of_src</Name>" "$SRC/Configuration.xml" || {
 }
 
 command -v vrunner >/dev/null || {
-	echo "vrunner is not on PATH. Compile inside the devcontainer:" >&2
-	echo "  docker compose -f .devcontainer/docker-compose.yml exec -T dev tools/1c-release/compile-plain-config.sh" >&2
+	echo "vrunner is not on PATH. Run this inside the dev container:" >&2
+	echo "  tools/1c-release/compile-plain-config.sh" >&2
+	echo "(VS Code: Dev Containers: Reopen in Container)" >&2
 	exit 1
 }
 

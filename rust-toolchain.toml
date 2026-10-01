@@ -3,7 +3,7 @@
 # and its components on the first `cargo` invocation if they are missing.
 #
 # x86_64-pc-windows-gnu is built from Linux with mingw-w64 (see
-# .devcontainer/Dockerfile and rust/.cargo/config.toml). The MSVC toolchain is
+# .devcontainer/devcontainer.json and rust/.cargo/config.toml). The MSVC toolchain is
 # deliberately not used: it needs a licence, mingw-w64 does not.
 #
 # A host build needs none of the listed targets: `cargo test` and `cargo build`

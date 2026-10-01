@@ -1,0 +1,55 @@
+{
+	"name": "1C / QR generator",
+
+	"image": "local/onec-dev:8.3.24.1667",
+
+	"workspaceFolder": "/workspace",
+
+	"workspaceMount":
+		"source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
+
+	"features": {
+		"ghcr.io/devcontainers/features/rust:1": {
+			"version": "1.92.0",
+			"profile": "minimal",
+			"targets": "x86_64-unknown-linux-gnu,x86_64-pc-windows-gnu",
+			"components": "clippy,rustfmt,rust-analyzer"
+		},
+		"ghcr.io/devcontainers-extra/features/apt-packages:1": {
+			"packages": "build-essential,pkg-config,gcc-mingw-w64-x86-64,zip,unzip,python3"
+		}
+	},
+
+	"containerEnv": {
+		"DEVCONTAINER": "TRUE",
+		"DISPLAY": "host.docker.internal:0",
+		"CARGO_HOME": "/usr/local/cargo",
+		"RUSTUP_HOME": "/usr/local/rustup"
+	},
+
+	"remoteEnv": {
+		"PATH": "/usr/local/cargo/bin:${containerEnv:PATH}"
+	},
+
+	"remoteUser": "root",
+
+	"mounts": [
+		"source=onec-developer-license,target=/var/1C/licenses,type=volume"
+	],
+
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"yellow-hammer.1c-platform-tools",
+				"1c-syntax.language-1c-bsl",
+				"rust-lang.rust-analyzer",
+				"vadimcn.vscode-lldb"
+			],
+			"settings": {
+				"terminal.integrated.defaultProfile.linux": "bash",
+				"files.eol": "\n",
+				"files.encoding": "utf8"
+			}
+		}
+	}
+}
