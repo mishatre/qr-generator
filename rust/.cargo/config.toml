@@ -11,6 +11,13 @@ linker = "x86_64-w64-mingw32-gcc"
 ar = "x86_64-w64-mingw32-ar"
 rustflags = ["-C", "target-feature=+crt-static"]
 
+# The same settings for the Windows 7 vendor. See build-addin.sh for why the
+# shipped library is built for that target instead of the one above.
+[target.x86_64-win7-windows-gnu]
+linker = "x86_64-w64-mingw32-gcc"
+ar = "x86_64-w64-mingw32-ar"
+rustflags = ["-C", "target-feature=+crt-static"]
+
 # Keep every build product under rust/target so one .gitignore rule covers them.
 [build]
 target-dir = "target"

@@ -33,7 +33,12 @@ LINUX_SOURCES=(
 	"rust/target/x86_64-unknown-linux-gnu/release/libqr_generator_addin.so"
 	"rust/target/release/libqr_generator_addin.so"
 )
+# The win7 build comes first: a library built for pc-windows-gnu imports
+# ProcessPrng, which Windows 7, 8 and 8.1 do not export, so it loads on Windows
+# 10 only. The second entry is kept for a tree where only the old artefact is
+# present; packing it produces a component that fails on those systems.
 WINDOWS_SOURCES=(
+	"rust/target/x86_64-win7-windows-gnu/release/qr_generator_addin.dll"
 	"rust/target/x86_64-pc-windows-gnu/release/qr_generator_addin.dll"
 )
 

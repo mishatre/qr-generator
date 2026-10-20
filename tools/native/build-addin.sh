@@ -57,9 +57,17 @@ if ! rustup component list --toolchain nightly --installed | grep -q '^rust-src'
 	exit 1
 fi
 
+# `win7` rather than `pc-windows-gnu` on purpose. Both rustc's std and getrandom
+# take ProcessPrng from bcryptprimitives.dll as their first choice, and that
+# export only exists from Windows 10 on; on Windows 7, 8 and 8.1 the library is
+# present but has no such entry point, so the DLL fails to load before 1C runs a
+# single line ("Точка входа в процедуру ProcessPrng не найдена"). The win7 target
+# vendor switches both to RtlGenRandom, which those systems do export, and keeps
+# the same ABI: one library still serves every x86_64 Windows. The target is
+# tier 3, which is why the build-std path below is not optional.
 TARGETS=(
 	x86_64-unknown-linux-gnu
-	x86_64-pc-windows-gnu
+	x86_64-win7-windows-gnu
 )
 
 for target in "${TARGETS[@]}"; do
@@ -77,4 +85,4 @@ echo
 echo "built:"
 stat -c '%s  %n' \
 	target/x86_64-unknown-linux-gnu/release/libqr_generator_addin.so \
-	target/x86_64-pc-windows-gnu/release/qr_generator_addin.dll
+	target/x86_64-win7-windows-gnu/release/qr_generator_addin.dll

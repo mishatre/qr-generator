@@ -8,7 +8,9 @@ The label is the visual check code — the last four characters of the record �
 code can be recognised at a glance. That is why error correction defaults to `H`: the plate
 covers modules, and the redundancy is what recovers them.
 
-Built for 1C 8.3.24 on Windows x86_64 and Linux x86_64.
+Built for 1C 8.3.24 on Windows 7 and later (x86_64) and on Linux x86_64. One Windows
+library serves every version: it is built for the `win7` target vendor, because the default
+one imports `ProcessPrng`, which Windows 7, 8 and 8.1 do not export.
 
 ## Using it
 
@@ -52,6 +54,7 @@ host can run the tests but cannot produce a shippable library.
 cd rust && cargo test --workspace
 
 # Both release libraries, then the archive the 1C template carries.
+# The Windows one goes to the win7 target vendor on purpose — see the note above.
 tools/native/build-addin.sh          # devcontainer only: nightly -Z build-std
 tools/native/pack-addin.sh           # -> build/dist/QrGeneratorNative.zip
 
